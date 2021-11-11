@@ -125,7 +125,7 @@ public class RichConnection implements Closeable {
 	 * @param database
 	 */
 	public void use(String database) {
-		if (database == null || dbType == DbType.MSACCESS || dbType == DbType.BIGQUERY || dbType == DbType.AZURE) {
+		if (database == null || dbType==DbType.IRIS || dbType == DbType.MSACCESS || dbType == DbType.BIGQUERY || dbType == DbType.AZURE) {
 			return;
 		}
 
@@ -164,7 +164,10 @@ public class RichConnection implements Closeable {
 			query = "SELECT TableName from dbc.tables WHERE tablekind IN ('T','V') and databasename='" + database + "'";
 		} else if (dbType == DbType.BIGQUERY) {
 			query = "SELECT table_name from " + database + ".INFORMATION_SCHEMA.TABLES ORDER BY table_name;";
+		} else if (dbType == DbType.IRIS) {
+			query = "SELECT table_schema || '.' || table_name FROM information_schema.tables WHERE table_schema = '" + database.toLowerCase() + "' ORDER BY table_name";
 		}
+
 
 		for (Row row : query(query))
 			names.add(row.get(row.getFieldNames().get(0)));
@@ -196,6 +199,10 @@ public class RichConnection implements Closeable {
 			qr = query("SELECT COUNT_BIG(*) FROM [" + tableName.replaceAll("\\.", "].[") + "];");
 		else if (dbType == DbType.MSACCESS)
 			qr = query("SELECT COUNT(*) FROM [" + tableName + "];");
+		else if (dbType == DbType.IRIS) {
+			String[] parts = tableName.split("\\.");
+			qr = query("SELECT COUNT(*) FROM " + "\"" + parts[0] + "\"." + "\"" + parts[1] + "\"" + ";");
+		}
 		else
 			qr = query("SELECT COUNT(*) FROM " + tableName + ";");
 		try {

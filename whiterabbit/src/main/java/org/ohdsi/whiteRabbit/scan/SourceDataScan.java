@@ -455,6 +455,10 @@ public class SourceDataScan {
 				query = "SELECT " + "TOP " + sampleSize + " * FROM [" + table + "]";
 			else if (dbType == DbType.BIGQUERY)
 				query = "SELECT * FROM " + table + " ORDER BY RAND() LIMIT " + sampleSize;
+			else if ( dbType == DbType.IRIS) {
+				String[] parts = table.split("\\.");
+				query = "SELECT " + "TOP " + sampleSize + " * FROM \"" + parts[0] +"\".\""+parts[1]+"\"" ;
+			}	
 		}
 		// System.out.println("SQL: " + query);
 		return connection.query(query);
@@ -487,7 +491,7 @@ public class SourceDataScan {
 				String[] parts = table.split("\\.");
 				query = "SELECT COLUMN_NAME,DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_CATALOG='" + trimmedDatabase + "' AND TABLE_SCHEMA='" + parts[0] +
 						"' AND TABLE_NAME='" + parts[1]	+ "';";
-			} else if (dbType == DbType.AZURE) {
+			} else if (dbType == DbType.AZURE || dbType== DbType.IRIS) {
 				String[] parts = table.split("\\.");
 				query = "SELECT COLUMN_NAME,DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA='" + parts[0] +
 						"' AND TABLE_NAME='" + parts[1]	+ "';";

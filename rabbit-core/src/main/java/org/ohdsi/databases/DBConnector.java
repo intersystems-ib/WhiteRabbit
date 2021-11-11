@@ -49,10 +49,26 @@ public class DBConnector {
 			return DBConnector.connectToTeradata(server, user, password);
 		else if (dbType.equals(DbType.BIGQUERY))
 			return DBConnector.connectToBigQuery(server, domain, user, password);
+		else if (dbType.equals(DbType.IRIS))
+			return DBConnector.connectToInterSytemsIRIS(server, user, password);
 		else
 			return null;
 	}
-
+	public static Connection connectToInterSytemsIRIS(String server,String user, String password) {
+		try {
+			Class.forName("com.intersystems.jdbc.IRISDriver");
+		} catch(ClassNotFoundException e) {
+			throw new RuntimeException("Cannot find JDBC driver. Make sure the intersystems-jdbc-3.2.0.jar is in the path");
+		}
+		//Formatfor server: "jdbc:IRIS://server_IP:Port/Namespace"
+		String url = "jdbc:IRIS://" + server;
+		try {
+			return DriverManager.getConnection(url, user, password);
+		} catch (SQLException e1) {
+			throw new RuntimeException("Cannot connect to DB server: " + e1.getMessage());
+		}
+	}
+	
 	public static Connection connectToTeradata(String server, String user, String password) {
 		try {
 			Class.forName("com.teradata.jdbc.TeraDriver");

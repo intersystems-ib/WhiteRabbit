@@ -17,6 +17,19 @@
     </properties>
 
     <dependencies>
+        <!-- ISCIB+ -->
+        <!-- JDBC Driver for InterSystems IRIS: 
+             latest version not available on maven central repo.
+             Install locally with:
+              mvn install:install-file -Dfile=intersystems-jdbc-3.2.0.jar -DgroupId=com.intersystems -DartifactId=intersystems-jdbc -Dversion=3.2.0 -Dpackaging=jar 
+        -->
+        <dependency>
+            <groupId>com.intersystems</groupId>
+            <artifactId>intersystems-jdbc</artifactId>
+            <version>3.2.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- ISCIB- -->
         <dependency>
             <groupId>com.oracle.jdbc</groupId>
             <artifactId>ojdbc14</artifactId>

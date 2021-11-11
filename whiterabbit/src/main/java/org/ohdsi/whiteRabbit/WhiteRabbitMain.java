@@ -208,6 +208,8 @@ public class WhiteRabbitMain implements ActionListener {
 				dbSettings.dbType = DbType.BIGQUERY;
 				/* GBQ requires database. Putting database into domain var for connect() */
 				dbSettings.domain = dbSettings.database;
+			} else if (iniFile.get("DATA_TYPE").equalsIgnoreCase("IRIS")) {
+				dbSettings.dbType=DbType.IRIS;
 			}
 		}
 
