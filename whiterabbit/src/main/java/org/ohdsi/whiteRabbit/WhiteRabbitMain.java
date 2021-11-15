@@ -314,7 +314,7 @@ public class WhiteRabbitMain implements ActionListener {
 		sourcePanel.setLayout(new GridLayout(0, 2));
 		sourcePanel.setBorder(BorderFactory.createTitledBorder("Source data location"));
 		sourcePanel.add(new JLabel("Data type"));
-		sourceType = new JComboBox<>(new String[] { "Delimited text files", "SAS7bdat", "MySQL", "Oracle", "SQL Server", "PostgreSQL", "MS Access", "PDW", "Redshift", "Teradata", "BigQuery", "Azure"});
+		sourceType = new JComboBox<>(new String[] { "Delimited text files", "SAS7bdat", "MySQL", "Oracle", "SQL Server", "PostgreSQL", "MS Access", "PDW", "Redshift", "Teradata", "BigQuery", "Azure","InterSystems IRIS"});
 		sourceType.setToolTipText("Select the type of source data available");
 		sourceType.addItemListener(itemEvent -> {
 			String selectedSourceType = itemEvent.getItem().toString();
@@ -347,7 +347,9 @@ public class WhiteRabbitMain implements ActionListener {
 			} else if (sourceIsDatabase) {
 				if (selectedSourceType.equals("Azure")) {
 					sourceServerField.setToolTipText("For Azure, this field contains the host name and database name (<host>;database=<database>)");
-				} else {
+				} else if (selectedSourceType.equals("iris")){
+					sourceServerField.setToolTipText("For InterSystems IRIS, this field contains the URL Connection String in the form Hostname:Port/Namespace and optionally /jdbc.log");
+				}else {
 					sourceServerField.setToolTipText("This field contains the name or IP address of the database server");
 				}
 				if (selectedSourceType.equals("SQL Server")) {
@@ -867,6 +869,8 @@ public class WhiteRabbitMain implements ActionListener {
 			else if (sourceType.getSelectedItem().toString().equals("Azure")) {
 				dbSettings.dbType = DbType.AZURE;
 				dbSettings.database = "";
+			}else if (sourceType.getSelectedItem().toString().equals("InterSystems IRIS")) {
+				dbSettings.dbType = DbType.IRIS;
 			}
 		}
 		return dbSettings;

@@ -10,12 +10,14 @@ Introduction
 
 # Changes in Fork
 
-This Fork contains added support for InterSystems IRIS 2021.1.
+This Fork contains added support for InterSystems IRIS 2021.1
+
+
 
 As the IRIS JDBC driver is not on maven central repo, the POM.xml uses a locally provided driver, which needs to be installed in the repo:
 
 ```
-mvn install:install-file -Dfile=intersystems-jdbc-3.2.0.jar -DgroupId=com.intersystem s -DartifactId=intersystems-jdbc -Dversion=3.2.0 -Dpackaging=jar
+mvn install:install-file -Dfile=intersystems-jdbc-3.2.0.jar -DgroupId=com.intersystems -DartifactId=intersystems-jdbc -Dversion=3.2.0 -Dpackaging=jar
 ```
 
 To Run, you need to edit the file .\iniFileExamples\WhiteRabbit-IRIS.in and change the values for the server, username, password and table schema to scan:
@@ -34,7 +36,7 @@ Run the command line version with:
 .\dist\bin\whiterabbit.bat -ini .\iniFileExamples\WhiteRabbit-IRIS.ini
 ```
 
-
+To Run the GUI version, Java11 is recommended (as Java 8 does not scale well Swing applications on higher DPI displays, and the UI gets very small).
 
 Features
 ========
